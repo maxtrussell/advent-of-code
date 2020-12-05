@@ -2,28 +2,17 @@ import math
 import typing as t
 
 def find_seat(line: str) -> int:
-    col_min, col_max = 0, 7
-    min, max = 0, 127
-    row = binary_search(line, 'F', 'B', 0, 127)
-    col = binary_search(line, 'L', 'R', 0, 7)
-    return (row * 8) + col
-
-def binary_search(line: str, lower: str, higher: str, min: int, max: int) -> int:
-    for c in line:
-        if c == lower:
-            max -= math.floor((max - min) / 2)
-        elif c == higher:
-            min += math.ceil((max - min) / 2)
-    return max if line[-1] == lower else min
+    line = line.replace('F', '0')
+    line = line.replace('B', '1')
+    line = line.replace('L', '0')
+    line = line.replace('R', '1')
+    return int(line, 2)
 
 def find_my_seat(seats: t.List[int]) -> int:
     # discard first and last rows of seats
-    valid_ids = {s for s in seats if 7 < s < 1016}
-    i = 0
-    while i < 1016:
-        if i not in valid_ids and i - 1 in valid_ids and i + 1 in valid_ids:
+    for i in range(256 * 8):
+        if i not in seats and i-1 in seats and i+1 in seats:
             return i
-        i += 1
     return -1
 
 
