@@ -57,7 +57,6 @@ def play_game(start, num_cups, num_turns):
 
         head = head.next
 
-    x, y = nodes[1].next.val, nodes[1].next.next.val
     return (head, nodes[1].next.val * nodes[1].next.next.val)
 
 def stringify_cups(cups):
