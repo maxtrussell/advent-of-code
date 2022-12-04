@@ -23,4 +23,9 @@ mkdir -p "$day"
 url="https://adventofcode.com/2022/day/"$(echo $day | sed 's/^0*//')"/input"
 cookies="session=$cookie"
 status_code=$(curl -sb $cookies $url -o ${day}/input.txt -w "%{http_code}")
+cat > "${day}/__init__.py" <<EOF
+import sys
+
+sys.path.append('../aoc.py')
+EOF
 echo $status_code
