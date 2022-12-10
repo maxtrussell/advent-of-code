@@ -1,11 +1,7 @@
 #!/bin/bash
 
 os=$(uname)
-if [ "$os" == "Linux" ]; then
-	cd ~/dev/advent-of-code/2022/
-else
-	cd ~/dev/github/maxtrussell/advent-of-code/2021
-fi
+cd ~/dev/advent-of-code/2022/
 
 cookie=''
 if [ -f "cookie.txt" ]; then
@@ -27,5 +23,11 @@ cat > "${day}/__init__.py" <<EOF
 import sys
 
 sys.path.append('../aoc.py')
+EOF
+
+cat > "${day}/main.py" <<EOF
+import aoc
+
+aoc.input_lines()
 EOF
 echo $status_code
