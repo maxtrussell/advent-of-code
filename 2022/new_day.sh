@@ -30,4 +30,16 @@ import aoc
 
 aoc.input_lines()
 EOF
+
+cat > "${day}/main.cpp" <<EOF
+#include <string>
+#include <vector>
+
+#include "../aoc.cpp"
+
+using namespace std;
+
+int main(int, char* argv[]) {
+  vector<string> lines = aoc::input_lines(argv[1]);
+}
 echo $status_code
