@@ -7,8 +7,8 @@
 
 using namespace std;
 
-int main(int, char *argv[]) {
-  vector<string> lines = aoc::input_lines(argv[1]);
+int main(int argc, char *argv[]) {
+  vector<string> lines = aoc::input_lines(argc, argv);
   vector<int> elves;
   int elf = 0;
   for (const auto &line : lines) {
@@ -19,9 +19,7 @@ int main(int, char *argv[]) {
       elf += stoi(line);
   }
   elves.push_back(elf);
-  sort(elves.begin(), elves.end());
-  reverse(elves.begin(), elves.end());
-
+  sort(elves.begin(), elves.end(), [](int a, int b) { return a > b; });
   aoc::output(elves[0]);
   aoc::output(elves[0] + elves[1] + elves[2]);
 }

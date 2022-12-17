@@ -1,16 +1,21 @@
 #include <fstream>
 #include <iostream>
+#include <stdexcept>
 #include <string>
 #include <vector>
 
 namespace aoc {
 using namespace std;
 
-vector<string> input_lines(const string &filename) {
-  ifstream infile(filename);
+vector<string> input_lines(int argc, char **argv) {
+  if (argc < 2)
+    throw invalid_argument("Input file is required");
+  ifstream ifs(*(++argv));
+  if (!ifs)
+    throw invalid_argument("Could not open file");
   vector<string> lines;
-  for (string line; getline(infile, line);)
-    lines.push_back(line);
+  for (string line; getline(ifs, line);)
+    lines.push_back(move(line));
   return lines;
 }
 

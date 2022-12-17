@@ -39,7 +39,8 @@ cat > "${day}/main.cpp" <<EOF
 
 using namespace std;
 
-int main(int, char* argv[]) {
-  vector<string> lines = aoc::input_lines(argv[1]);
+int main(int argc, char* argv[]) {
+  vector<string> lines = aoc::input_lines(argc, argv);
 }
+EOF
 echo $status_code
