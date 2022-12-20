@@ -39,6 +39,7 @@ vector<pair<string, int>> bfs(const Graph& graph, const string& start) {
   return paths;
 }
 
+// Caching would probably speed this up a bunch.
 int dfs(const Graph& graph, const Paths& paths, const string& loc, int time,
         unordered_set<string>& opened) {
   int score = 0;
@@ -63,6 +64,14 @@ void get_subsets(const vector<string>& choices, int i, vector<string>& subset,
   }
 }
 
+// TODO: Potential library function?
+vector<vector<string>> get_subsets(const vector<string>& choices) {
+  vector<vector<string>> subsets;
+  vector<string> subset;
+  get_subsets(choices, 0, subset, subsets);
+  return subsets;
+}
+
 pair<unordered_set<string>, unordered_set<string>>
 get_opened(const vector<string>& all, const vector<string>& subset) {
   unordered_set<string> human(subset.begin(), subset.end());
@@ -71,14 +80,6 @@ get_opened(const vector<string>& all, const vector<string>& subset) {
     if (human.count(valve) == 0)
       elephant.insert(valve);
   return {human, elephant};
-}
-
-// TODO: Potential library function?
-vector<vector<string>> get_subsets(const vector<string>& choices) {
-  vector<vector<string>> subsets;
-  vector<string> subset;
-  get_subsets(choices, 0, subset, subsets);
-  return subsets;
 }
 
 int main(int argc, char *argv[]) {
