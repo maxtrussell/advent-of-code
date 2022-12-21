@@ -78,6 +78,10 @@ bool operator==(const Point& a, const Point& b) {
 
 bool operator!=(const Point& a, const Point& b) { return !(a == b); }
 
+// An alternative modulo ensuring the return value is positive.
+// Behaves like python's mod.
+int64_t mod(int64_t x, int64_t y) { return ((x % y) + y) % y; }
+
 } // namespace aoc
 
 template <> struct std::hash<aoc::Point> {
