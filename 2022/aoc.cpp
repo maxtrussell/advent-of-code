@@ -6,6 +6,7 @@
 
 #include "boost/algorithm/string/classification.hpp"
 #include "boost/algorithm/string/split.hpp"
+#include <boost/container_hash/hash.hpp>
 
 namespace aoc {
 using namespace std;
@@ -27,13 +28,13 @@ template <typename T> void output(T msg) {
   std::cout << "Part " << ++part << ": " << msg << std::endl;
 }
 
-vector<string> split(const string &s, const string &sep) {
+vector<string> split(const string& s, const string& sep) {
   vector<string> tokens;
   boost::split(tokens, s, boost::is_any_of(sep));
   return tokens;
 }
 
-int read_int(const string &line, string::const_iterator &it) {
+int read_int(const string& line, string::const_iterator& it) {
   while (!isdigit(*it) && *it != '-') {
     ++it;
   }
@@ -45,7 +46,7 @@ int read_int(const string &line, string::const_iterator &it) {
   return stoi(buf);
 }
 
-int read_int(const string &line) {
+int read_int(const string& line) {
   auto it = line.cbegin();
   return read_int(line, it);
 }
@@ -54,29 +55,36 @@ struct Point {
   int x = 0, y = 0;
 };
 
-ostream &operator<<(ostream &out, const Point &p) {
+ostream& operator<<(ostream& out, const Point& p) {
   return out << "Point{x: " << p.x << ", y: " << p.y << "}";
 }
 
-Point operator+(const Point &a, const Point &b) {
+Point operator+(const Point& a, const Point& b) {
   return Point{a.x + b.x, a.y + b.y};
 }
 
-Point operator-(const Point &a, const Point &b) {
+void operator+=(Point& a, const Point& b) {
+  a.x += b.x;
+  a.y += b.y;
+}
+
+Point operator-(const Point& a, const Point& b) {
   return Point{a.x - b.x, a.y - b.y};
 }
 
-bool operator==(const Point &a, const Point &b) {
+bool operator==(const Point& a, const Point& b) {
   return a.x == b.x && a.y == b.y;
 }
 
-bool operator!=(const Point &a, const Point &b) { return !(a == b); }
+bool operator!=(const Point& a, const Point& b) { return !(a == b); }
 
 } // namespace aoc
 
 template <> struct std::hash<aoc::Point> {
-  size_t operator()(const aoc::Point &p) const noexcept {
-    hash<int> hash_int;
-    return hash_int(p.x) ^ hash_int(p.y);
+  size_t operator()(const aoc::Point& p) const noexcept {
+    size_t hash = 0;
+    boost::hash_combine(hash, p.x);
+    boost::hash_combine(hash, p.y);
+    return hash;
   }
 };
