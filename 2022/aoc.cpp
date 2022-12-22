@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <fstream>
 #include <iostream>
 #include <stdexcept>
@@ -34,7 +35,7 @@ vector<string> split(const string& s, const string& sep) {
   return tokens;
 }
 
-int read_int(const string& line, string::const_iterator& it) {
+int read_int(string::const_iterator& it) {
   while (!isdigit(*it) && *it != '-') {
     ++it;
   }
@@ -48,11 +49,29 @@ int read_int(const string& line, string::const_iterator& it) {
 
 int read_int(const string& line) {
   auto it = line.cbegin();
-  return read_int(line, it);
+  return read_int(it);
 }
 
 struct Point {
   int x = 0, y = 0;
+
+  /**
+   * Returns a point rotated clockwise about 0,0.
+   */
+  Point rotate() { return {y, -x}; }
+
+  /**
+   * Returns a point rotated clockwise n times about 0,0.
+   */
+  Point rotate(int n) {
+    Point rotated;
+    for (int i = 0; i < n; ++i)
+      rotated = rotate();
+    return rotated;
+  };
+
+  Point rotate_about(Point center);
+  Point rotate_about(Point center, int n);
 };
 
 ostream& operator<<(ostream& out, const Point& p) {
@@ -72,15 +91,75 @@ Point operator-(const Point& a, const Point& b) {
   return Point{a.x - b.x, a.y - b.y};
 }
 
+bool operator>(const Point& a, const Point& b) {
+  return a.x > b.x && a.y > b.y;
+}
+
+bool operator>=(const Point& a, const Point& b) {
+  return a.x >= b.x && a.y >= b.y;
+}
+
+bool operator<(const Point& a, const Point& b) {
+  return a.x < b.x && a.y < b.y;
+}
+
+bool operator<=(const Point& a, const Point& b) {
+  return a.x <= b.x && a.y <= b.y;
+}
+
 bool operator==(const Point& a, const Point& b) {
   return a.x == b.x && a.y == b.y;
 }
 
 bool operator!=(const Point& a, const Point& b) { return !(a == b); }
 
-// An alternative modulo ensuring the return value is positive.
-// Behaves like python's mod.
+Point Point::rotate_about(Point center) {
+  Point relative = *this - center;
+  relative = relative.rotate();
+  return relative + center;
+}
+
+Point Point::rotate_about(Point center, int n) {
+  Point rotated;
+  for (int i = 0; i < n; ++i)
+    rotated = rotated.rotate_about(center);
+  return rotated;
+}
+
+struct Rect {
+  Point min_;
+  Point max_;
+
+  Rect(Point min, Point max) : min_(min), max_(max) {}
+  Rect(Point min, int width, int height) : min_(min) {
+    max_ = min + Point{width - 1, height - 1};
+  }
+  bool contains(Point p) const { return min_ <= p && p <= max_; }
+};
+
+/**
+ * An alternative modulo ensuring the return value is positive. Behaves like
+ * python's mod.
+ */
 int64_t mod(int64_t x, int64_t y) { return ((x % y) + y) % y; }
+
+/**
+ * Returns the index of the given element or -1 if no match is found.
+ */
+template <typename Iter, typename Value>
+int index_of(Iter begin, Iter end, Value v) {
+  auto it = find(begin, end, v);
+  if (it == end)
+    return -1;
+  return it - begin;
+}
+
+/**
+ * Returns the index of the given element or -1 if no match is found.
+ */
+template <typename Cont, typename Value> int index_of(const Cont& c, Value v) {
+  return index_of(c.begin(), c.end(), v);
+}
 
 } // namespace aoc
 
