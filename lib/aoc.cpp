@@ -12,6 +12,8 @@
 namespace aoc {
 using namespace std;
 
+static int Part = 0;
+
 vector<string> input_lines(int argc, char **argv) {
   if (argc < 2)
     throw invalid_argument("Input file is required");
@@ -25,8 +27,7 @@ vector<string> input_lines(int argc, char **argv) {
 }
 
 template <typename T> void output(T msg) {
-  static int part;
-  std::cout << "Part " << ++part << ": " << msg << std::endl;
+  std::cout << "Part " << ++Part << ": " << msg << std::endl;
 }
 
 vector<string> split(const string& s, const string& sep) {
