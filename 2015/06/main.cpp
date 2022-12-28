@@ -12,7 +12,7 @@ struct Instruction {
   string action;
 };
 
-void do_instruction(vector<vector<int>>& lights, const Instruction& inst) {
+void do_instruction(vector<vector<int16_t>>& lights, const Instruction& inst) {
   for (int y = inst.start.y; y <= inst.end.y; ++y) {
     for (int x = inst.start.x; x <= inst.end.x; ++x) {
       if (inst.action == "on")
@@ -27,18 +27,15 @@ void do_instruction(vector<vector<int>>& lights, const Instruction& inst) {
 }
 
 int main(int argc, char *argv[]) {
-  vector<Instruction> instructions;
+  vector<vector<int16_t>> lights(1000, vector<int16_t>(1000, 0));
   for (const string& line : aoc::input_lines(argc, argv)) {
     vector<string> tokens = aoc::split(line, " ");
     auto it = line.begin();
-    instructions.push_back({{aoc::read_int(it), aoc::read_int(it)},
-                            {aoc::read_int(it), aoc::read_int(it)},
-                            tokens[1]});
-  };
-
-  vector<vector<int>> lights(1000, vector<int>(1000, 0));
-  for (const auto& inst : instructions)
+    Instruction inst{{aoc::read_int(it), aoc::read_int(it)},
+                     {aoc::read_int(it), aoc::read_int(it)},
+                     tokens[1]};
     do_instruction(lights, inst);
+  };
 
   int64_t on = 0, brightness = 0;
   for (int y = 0; y < 1000; ++y) {
