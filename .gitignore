@@ -2,3 +2,5 @@ cookie.txt
 input.txt
 __pycache__
 main
+.env
+aoc.egg-info

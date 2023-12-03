@@ -1,4 +1,4 @@
-import aoc
+import lib.aoc as aoc
 
 from functools import reduce
 from operator import mul

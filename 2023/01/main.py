@@ -1,4 +1,4 @@
-import aoc
+import lib.aoc as aoc
 import typing as t
 
 spelled = {

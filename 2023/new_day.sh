@@ -19,28 +19,11 @@ mkdir -p "$day"
 url="https://adventofcode.com/2023/day/"$(echo $day | sed 's/^0*//')"/input"
 cookies="session=$cookie"
 status_code=$(curl -sb $cookies $url -o ${day}/input.txt -w "%{http_code}")
-# cat > "${day}/__init__.py" <<EOF
-# import sys
 
-# sys.path.append('../aoc.py')
-# EOF
+cat > "${day}/main.py" <<EOF
+import lib.aoc as aoc
 
-# cat > "${day}/main.py" <<EOF
-# import aoc
-
-# aoc.input_lines()
-# EOF
-
-cat > "${day}/main.cpp" <<EOF
-#include <string>
-#include <vector>
-
-#include "../lib/aoc.cpp"
-
-using namespace std;
-
-int main(int argc, char* argv[]) {
-  aoc::input_lines(argc, argv);
-}
+aoc.input_lines()
 EOF
+
 echo $status_code
