@@ -23,3 +23,4 @@ def raw_input() -> str:
 def output(ans):
     global part
     print(f'Part {part}: {ans}')
+    part += 1
