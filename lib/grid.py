@@ -6,6 +6,18 @@ class Point:
         self.x = x
         self.y = y
 
+    def abs(self) -> 'Point':
+        return Point(abs(self.x), abs(self.y))
+
+    def mul(self, k: int) -> 'Point':
+        return Point(self.x * k, self.y * k)
+
+    def div(self, k: int) -> 'Point':
+        return Point(self.x / k, self.y / k)
+
+    def __neg__(self) -> 'Point':
+        return Point(-self.x, -self.y)
+
     def __hash__(self) -> int:
         return hash((self.x, self.y))
 
