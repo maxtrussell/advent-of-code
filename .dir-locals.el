@@ -1,1 +1,1 @@
-((nil . ((compile-command . "./run.sh 2024."))))
+((nil . ((compile-command . "./run.sh 2025."))))
